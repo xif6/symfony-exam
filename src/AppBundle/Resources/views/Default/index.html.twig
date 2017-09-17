@@ -1,0 +1,33 @@
+{% extends "::base.html.twig" %}
+
+{% block body %}
+<form>
+    <input type="text" name="q" id="q">
+    <input type="submit">
+</form>
+    <div id="result"></div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+    $( document ).ready(function() {
+        $('form').submit(function(event){
+            event.preventDefault();
+            $.get(
+                'search',
+                {q: $('#q').val()},
+                function(data) {
+                    console.log(data);
+                    let html = '';
+                    data.forEach(function (food) {
+                        html += `<div><a href="food/${food.id}">${food.name}</a> (${food.group})</div>`;
+                    });
+                    $('#result').html(html);
+                },
+                'json'
+            );
+        });
+    });
+    </script>
+{% endblock %}
