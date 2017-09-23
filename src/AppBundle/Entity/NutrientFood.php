@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -26,6 +27,7 @@ class NutrientFood
      * @var float
      *
      * @ORM\Column(name="value", type="string", nullable=true)
+     * @Groups({"food"})
      */
     private $value;
 
@@ -42,6 +44,7 @@ class NutrientFood
      *
      * @ORM\ManyToOne(targetEntity="Nutrient")
      * @ORM\JoinColumn(name="nutrient_id", referencedColumnName="id")
+     * @Groups({"food"})
      */
     private $nutrient;
 

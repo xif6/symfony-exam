@@ -2,32 +2,18 @@
 
 {% block body %}
 <form>
-    <input type="text" name="q" id="q">
-    <input type="submit">
+    <h2>Chercher un ingrédient</h2>
+    <div class="form-group">
+        <input type="text" class="form-control" name="q" id="q">
+    </div>
+    <button type="submit" class="btn btn-lg btn-primary btn-block">Valider</button>
 </form>
-    <div id="result"></div>
+<br>
+<div id="result" class="list-group col-12"></div>
+
 {% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
-    <script>
-    $( document ).ready(function() {
-        $('form').submit(function(event){
-            event.preventDefault();
-            $.get(
-                'search',
-                {q: $('#q').val()},
-                function(data) {
-                    console.log(data);
-                    let html = '';
-                    data.forEach(function (food) {
-                        html += `<div><a href="food/${food.id}">${food.name}</a> (${food.group})</div>`;
-                    });
-                    $('#result').html(html);
-                },
-                'json'
-            );
-        });
-    });
-    </script>
+    <script src="{{ asset('assets/search.js') }}"></script>
 {% endblock %}

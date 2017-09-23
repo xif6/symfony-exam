@@ -2,16 +2,22 @@
 
 namespace AppBundle\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiSubresource;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Food
  *
+ * @ApiResource(attributes={
+ *     "normalization_context"={"groups"={"food"}}
+ *     })
  * @ORM\Table(name="food")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\FoodRepository")
  */
-class Food implements \JsonSerializable
+class Food
 {
     /**
      * @var int
@@ -19,6 +25,7 @@ class Food implements \JsonSerializable
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @Groups({"food"})
      */
     private $id;
 
@@ -26,6 +33,7 @@ class Food implements \JsonSerializable
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255)
+     * @Groups({"food"})
      */
     private $name;
 
@@ -34,6 +42,7 @@ class Food implements \JsonSerializable
      *
      * @ORM\ManyToOne(targetEntity="FoodGroup", inversedBy="foods")
      * @ORM\JoinColumn(name="food_group_id", referencedColumnName="id")
+     * @Groups({"food"})
      */
     private $foodGroup;
 
@@ -41,6 +50,7 @@ class Food implements \JsonSerializable
      * @var ArrayCollection
      *
      * @ORM\OneToMany(targetEntity="NutrientFood", mappedBy="food", cascade={"persist", "remove"})
+     * @Groups({"food"})
      */
     private $nutrientsFood;
 
@@ -139,11 +149,6 @@ class Food implements \JsonSerializable
     public function getNutrientsFood()
     {
         return $this->nutrientsFood;
-    }
-
-    public function jsonSerialize()
-    {
-        return ['id' => $this->getId(), 'name' => $this->getName(), 'group' => $this->getFoodGroup()->getName()];
     }
 }
 

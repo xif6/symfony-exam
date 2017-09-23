@@ -25,38 +25,13 @@ class DefaultController extends Controller
     }
 
     /**
-     * @Route("/search", name="search")
-     */
-    public function searchAction(Request $request)
-    {
-        $em = $this->getDoctrine()->getManager();
-        $q = $request->query->get('q');
-        $foods = $this->getDoctrine()->getRepository('AppBundle:Food')->search($q);
-        return new JsonResponse($foods);
-    }
-
-    /**
      * @Route("/food/{id}", name="food")
      * @ParamConverter("food", class="AppBundle:Food")
+     * @Template()
      */
     public function foodAction(Request $request, Food $food)
     {
-        $out = [
-            'name' => $food->getName(),
-            'nutrient' => $this->nutrientFormat($food->getNutrientsFood())
-        ];
-        return new JsonResponse($out);
+        return ['food' => $food];
     }
 
-    protected function nutrientFormat($nutrientsFood)
-    {
-        $out = [];
-        foreach ($nutrientsFood as $nutrientFood) {
-            $out[] = [
-                'name' => $nutrientFood->getNutrient()->getName(),
-                'value' => $nutrientFood->getValue(),
-            ];
-        }
-        return $out;
-    }
 }

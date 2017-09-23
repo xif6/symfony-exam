@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -19,6 +20,7 @@ class FoodGroup
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @Groups({"food"})
      */
     private $id;
 
@@ -26,6 +28,7 @@ class FoodGroup
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255, unique=true)
+     * @Groups({"food"})
      */
     private $name;
 

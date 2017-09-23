@@ -1,0 +1,16 @@
+{% extends "::base.html.twig" %}
+
+{% block body %}
+<h2>{{ food.name }}</h2>
+<br>
+<div id="result" class="list-group col-12"></div>
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        var food_id = {{ food.id }}
+    </script>
+    <script src="{{ asset('assets/food.js') }}"></script>
+{% endblock %}

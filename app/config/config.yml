@@ -19,7 +19,7 @@ framework:
     form: ~
     csrf_protection: ~
     validation: { enable_annotations: true }
-    #serializer: { enable_annotations: true }
+    serializer: { enable_annotations: true }
     templating:
         engines: ['twig']
     default_locale: '%locale%'
@@ -68,3 +68,43 @@ swiftmailer:
     username: '%mailer_user%'
     password: '%mailer_password%'
     spool: { type: memory }
+
+fos_elastica:
+    clients:
+        default: { host: '%elasticsearch_host%', port: '%elasticsearch_port%' }
+    indexes:
+        app:
+            client: default
+            settings:
+                index:
+                    analysis:
+                        analyzer:
+                            default: # analyzer name default for default analyzer for ALL index
+                                type: snowball
+                                language: French
+                            custom_french_analyzer:
+                                type: custom
+                                tokenizer: letter
+                                filter: ["asciifolding", "lowercase", "french_stem", "stop_fr"]
+                        filter:
+                            stop_fr:
+                                type: "stop"
+                                stopwords: ["l", "m", "t", "qu", "n", "s", "j", "d"]
+            types:
+                food:
+                    mappings:
+                        name: { boost: 2 }
+                        food_group:
+                            type: nested
+                            properties:
+                                name: ~
+                    serializer:
+                        groups: [foods]
+                    persistence:
+#                        elastica_to_model_transformer:
+#                            query_builder_method: createSearchQueryBuilder
+                        driver: orm # orm, mongodb, propel are available
+                        model:  AppBundle\Entity\Food
+                        provider: ~
+                        listener: ~ # by default, listens to "insert", "update" and "delete"
+                        finder: ~
